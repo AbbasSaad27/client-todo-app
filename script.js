@@ -24,6 +24,9 @@ function createTodo(todoInputValue, id) {
   var newTodo = createNewTodoListItem(todoInputValue, id);
   todoDiv.appendChild(newTodo);
 
+  // edit button
+  var editButton = createEditButton();
+  todoDiv.appendChild(editButton);
   //check Mark Button
   var completedButton = createCheckMarkButton();
   todoDiv.appendChild(completedButton);
@@ -54,6 +57,7 @@ function createNewTodoListItem(todoValue = todoInput.value, id) {
   newtodoInput.type = "text";
   newtodoInput.value = todoValue;
   newtodoInput.dataset.id = id;
+  newtodoInput.disabled = true;
   newtodoInput.classList.add("update-task");
 
   // adding the event listener for monitoring changes and saving it
@@ -69,6 +73,12 @@ function createNewTodoListItem(todoValue = todoInput.value, id) {
     todos.splice(todoIndex, 1, newTodoObj);
     localStorage.setItem("todos", JSON.stringify(todos));
   });
+  //disabling edit on enter press
+  newtodoInput.addEventListener("keydown", function (e) {
+    if (e.key == "Enter") {
+      newtodoInput.disabled = true;
+    }
+  });
   // appending the input to the list Item
   newTodo.appendChild(newtodoInput);
   newTodo.classList.add("todo-item");
@@ -81,6 +91,13 @@ function createCheckMarkButton() {
   completedButton.innerHTML = '<i class="fas fa-check"></i>';
   completedButton.classList.add("complete-btn");
   return completedButton;
+}
+
+function createEditButton() {
+  var editButton = document.createElement("button");
+  editButton.innerHTML = '<i class="fas fa-edit"></i>';
+  editButton.classList.add("edit-btn");
+  return editButton;
 }
 
 // creating delete button
@@ -105,10 +122,20 @@ function completeOrDelete(e) {
   // checking if the button clicked was complete btn
   if (item.classList[0] === "complete-btn") {
     var todo = item.parentElement;
-    item.previousSibling
+    item.previousSibling.previousSibling
       .querySelector(".update-task")
       .classList.toggle("completed-text");
     todo.classList.toggle("completed");
+  }
+
+  // enabling and disabling edit
+  if (item.classList[0] === "edit-btn") {
+    var input = item.previousSibling.querySelector(".update-task");
+    if (input.disabled) {
+      input.disabled = false;
+    } else {
+      input.disabled = true;
+    }
   }
 }
 

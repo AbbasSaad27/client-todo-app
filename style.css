@@ -67,7 +67,8 @@ form button:hover {
 }
 
 .trash-btn,
-.complete-btn {
+.complete-btn,
+.edit-btn {
   background: #ff6f47;
   color: white;
   border: none;
@@ -87,13 +88,18 @@ form button:hover {
   height: 100%;
   padding: 0rem 0.5rem;
   font-size: inherit;
+  resize: both;
+}
+.update-task:disabled {
+  color: black;
 }
 .completed-text {
   text-decoration: line-through;
 }
 
 .fa-trash,
-.fa-check {
+.fa-check,
+.fa-edit {
   pointer-events: none;
 }
 
